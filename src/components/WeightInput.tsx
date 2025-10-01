@@ -24,20 +24,20 @@ export const WeightInput = ({ onLog, lastWeight }: WeightInputProps) => {
   };
 
   return (
-    <div className="bg-card rounded-2xl shadow-lg p-6">
+    <div className="bg-card rounded-2xl shadow-lg p-4 sm:p-6">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex items-center gap-3 text-foreground">
-          <Calendar className="w-6 h-6 text-primary" />
+        <div className="flex items-center gap-2 sm:gap-3 text-foreground">
+          <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="text-2xl font-bold bg-transparent border-none outline-none"
+            className="text-lg sm:text-2xl font-bold bg-transparent border-none outline-none w-full"
             required
           />
         </div>
         
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <Input
             type="number"
             step="0.1"
@@ -45,20 +45,20 @@ export const WeightInput = ({ onLog, lastWeight }: WeightInputProps) => {
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             placeholder="Weight (kg)"
-            className="flex-1 h-14 text-lg rounded-xl"
+            className="flex-1 h-12 sm:h-14 text-base sm:text-lg rounded-xl"
             required
           />
           <Button 
             type="submit" 
             size="lg"
-            className="px-8 rounded-xl text-lg font-semibold"
+            className="px-6 sm:px-8 rounded-xl text-base sm:text-lg font-semibold h-12 sm:h-14 w-full sm:w-auto"
           >
-            Log
+            Log Weight
           </Button>
         </div>
 
         {lastWeight !== undefined && (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Last logged: <span className="font-semibold text-foreground">{lastWeight} kg</span>
           </p>
         )}

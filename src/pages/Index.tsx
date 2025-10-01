@@ -50,6 +50,28 @@ const Index = () => {
     });
   };
 
+  const handleEdit = (oldDate: string, newDate: string, newWeight: number) => {
+    setLogs(prevLogs => {
+      const filtered = prevLogs.filter(log => log.date !== oldDate);
+      const existingIndex = filtered.findIndex(log => log.date === newDate);
+      
+      if (existingIndex >= 0) {
+        filtered[existingIndex] = { date: newDate, weight: newWeight };
+        toast({
+          title: 'Weight updated',
+          description: `Updated weight for ${newDate} to ${newWeight} kg`,
+        });
+        return filtered;
+      } else {
+        toast({
+          title: 'Weight updated',
+          description: `Changed from ${oldDate} to ${newDate} with ${newWeight} kg`,
+        });
+        return [...filtered, { date: newDate, weight: newWeight }];
+      }
+    });
+  };
+
   const handleImport = (importedLogs: WeightLog[]) => {
     setLogs(importedLogs);
   };
@@ -78,14 +100,14 @@ const Index = () => {
   const lastWeight = logs.length > 0 ? logs[logs.length - 1].weight : undefined;
 
   return (
-    <div className="min-h-screen bg-gradient-app py-8 px-4">
-      <div className="max-w-5xl mx-auto space-y-6">
-        <header className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <Scale className="w-10 h-10 text-primary" />
-            <h1 className="text-4xl font-bold text-foreground">Weight Tracker</h1>
+    <div className="min-h-screen bg-gradient-app py-4 sm:py-8 px-3 sm:px-4">
+      <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
+        <header className="text-center mb-4 sm:mb-8">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+            <Scale className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
+            <h1 className="text-3xl sm:text-4xl font-bold text-foreground">Weight Tracker</h1>
           </div>
-          <p className="text-muted-foreground">Track your progress, reach your goals</p>
+          <p className="text-sm sm:text-base text-muted-foreground">Track your progress, reach your goals</p>
         </header>
 
         <WeightInput onLog={handleLog} lastWeight={lastWeight} />
@@ -94,7 +116,7 @@ const Index = () => {
           <>
             <AnalyticsCard {...stats} />
             <ChartCard logs={logs} />
-            <HistoryTable logs={logs} onDelete={handleDelete} />
+            <HistoryTable logs={logs} onDelete={handleDelete} onEdit={handleEdit} />
           </>
         )}
 

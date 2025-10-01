@@ -14,10 +14,10 @@ export const AnalyticsCard = ({ average, min, max, first, last, change }: Analyt
   const changeAbs = Math.abs(change);
 
   return (
-    <div className="bg-card rounded-2xl shadow-lg p-6">
-      <h2 className="text-2xl font-bold mb-6 text-foreground">Weight Analysis</h2>
+    <div className="bg-card rounded-2xl shadow-lg p-4 sm:p-6">
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-foreground">Weight Analysis</h2>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         <StatCard label="Average" value={average} unit="kg" />
         <StatCard label="Min" value={min} unit="kg" />
         <StatCard label="Max" value={max} unit="kg" />
@@ -25,19 +25,19 @@ export const AnalyticsCard = ({ average, min, max, first, last, change }: Analyt
           label="Trend" 
           value={changeAbs} 
           unit="kg"
-          icon={isLoss ? <TrendingDown className="w-5 h-5" /> : <TrendingUp className="w-5 h-5" />}
+          icon={isLoss ? <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5" /> : <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />}
           valueClassName={isLoss ? 'text-success' : 'text-destructive'}
         />
       </div>
       
-      <div className="mt-4 grid grid-cols-2 gap-4">
-        <div className="bg-accent/30 rounded-xl p-4">
-          <p className="text-sm text-muted-foreground mb-1">First Weight</p>
-          <p className="text-2xl font-bold text-foreground">{first} <span className="text-base font-normal">kg</span></p>
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
+        <div className="bg-accent/30 rounded-xl p-3 sm:p-4">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-1">First Weight</p>
+          <p className="text-xl sm:text-2xl font-bold text-foreground">{first} <span className="text-sm sm:text-base font-normal">kg</span></p>
         </div>
-        <div className="bg-accent/30 rounded-xl p-4">
-          <p className="text-sm text-muted-foreground mb-1">Current Weight</p>
-          <p className="text-2xl font-bold text-foreground">{last} <span className="text-base font-normal">kg</span></p>
+        <div className="bg-accent/30 rounded-xl p-3 sm:p-4">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-1">Current Weight</p>
+          <p className="text-xl sm:text-2xl font-bold text-foreground">{last} <span className="text-sm sm:text-base font-normal">kg</span></p>
         </div>
       </div>
     </div>
@@ -53,12 +53,12 @@ interface StatCardProps {
 }
 
 const StatCard = ({ label, value, unit, icon, valueClassName = 'text-foreground' }: StatCardProps) => (
-  <div className="bg-accent/20 rounded-xl p-4">
-    <p className="text-sm text-muted-foreground mb-1">{label}</p>
-    <div className="flex items-baseline gap-2">
+  <div className="bg-accent/20 rounded-xl p-3 sm:p-4">
+    <p className="text-xs sm:text-sm text-muted-foreground mb-1">{label}</p>
+    <div className="flex items-baseline gap-1 sm:gap-2">
       {icon && <span className={valueClassName}>{icon}</span>}
-      <p className={`text-2xl font-bold ${valueClassName}`}>
-        {value.toFixed(1)} <span className="text-base font-normal">{unit}</span>
+      <p className={`text-lg sm:text-2xl font-bold ${valueClassName}`}>
+        {value.toFixed(1)} <span className="text-xs sm:text-base font-normal">{unit}</span>
       </p>
     </div>
   </div>
