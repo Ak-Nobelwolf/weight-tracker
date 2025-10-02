@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { WeightInput } from '@/components/WeightInput';
 import { AnalyticsCard } from '@/components/AnalyticsCard';
 import { ChartCard } from '@/components/ChartCard';
@@ -9,14 +9,16 @@ import { useToast } from '@/hooks/use-toast';
 import { Scale } from 'lucide-react';
 
 const Index = () => {
-  const [logs, setLogs] = useState<WeightLog[]>([]);
+  const [logs, setLogs] = useState<WeightLog[]>(() => loadLogs());
   const { toast } = useToast();
+  const isInitialMount = useRef(true);
 
+  // Save logs to localStorage whenever they change (except on initial mount)
   useEffect(() => {
-    setLogs(loadLogs());
-  }, []);
-
-  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     saveLogs(logs);
   }, [logs]);
 

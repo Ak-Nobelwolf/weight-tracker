@@ -2,6 +2,16 @@ import { Trash2, Pencil } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { WeightLog } from '@/utils/storage';
@@ -18,6 +28,7 @@ export const HistoryTable = ({ logs, onDelete, onEdit }: HistoryTableProps) => {
   const [editDate, setEditDate] = useState('');
   const [editWeight, setEditWeight] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [deleteDate, setDeleteDate] = useState<string | null>(null);
 
   const sortedLogs = [...logs].sort((a, b) => 
     new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -142,7 +153,7 @@ export const HistoryTable = ({ logs, onDelete, onEdit }: HistoryTableProps) => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => onDelete(log.date)}
+                        onClick={() => setDeleteDate(log.date)}
                         className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8 p-0"
                       >
                         <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -156,6 +167,31 @@ export const HistoryTable = ({ logs, onDelete, onEdit }: HistoryTableProps) => {
           </table>
         </div>
       </div>
+      
+      <AlertDialog open={!!deleteDate} onOpenChange={() => setDeleteDate(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Weight Entry</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete the weight entry for {deleteDate}? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (deleteDate) {
+                  onDelete(deleteDate);
+                  setDeleteDate(null);
+                }
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

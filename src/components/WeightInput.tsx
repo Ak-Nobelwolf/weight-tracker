@@ -16,10 +16,9 @@ export const WeightInput = ({ onLog, lastWeight }: WeightInputProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const weightNum = parseFloat(weight);
-    if (weightNum > 0) {
+    if (date && weightNum > 0 && !isNaN(weightNum)) {
       onLog(date, weightNum);
       setWeight('');
-      setDate(format(new Date(), 'yyyy-MM-dd'));
     }
   };
 

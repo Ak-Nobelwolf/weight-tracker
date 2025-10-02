@@ -1,9 +1,19 @@
 import { Download, Upload, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { WeightLog, exportLogs, importLogs, exportCSVTemplate, exportCSV, importCSV } from '@/utils/storage';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface DataOptionsProps {
   logs: WeightLog[];
@@ -14,6 +24,9 @@ export const DataOptions = ({ logs, onImport }: DataOptionsProps) => {
   const jsonInputRef = useRef<HTMLInputElement>(null);
   const csvInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const [showImportConfirm, setShowImportConfirm] = useState(false);
+  const [pendingImport, setPendingImport] = useState<WeightLog[] | null>(null);
+  const [importType, setImportType] = useState<'json' | 'csv'>('json');
 
   const handleExport = () => {
     exportLogs(logs);
@@ -33,17 +46,9 @@ export const DataOptions = ({ logs, onImport }: DataOptionsProps) => {
 
     try {
       const importedLogs = await importLogs(file);
-      const confirmed = window.confirm(
-        `This will replace your current ${logs.length} log(s) with ${importedLogs.length} imported log(s). Continue?`
-      );
-      
-      if (confirmed) {
-        onImport(importedLogs);
-        toast({
-          title: 'Backup restored',
-          description: `Successfully restored ${importedLogs.length} weight logs.`,
-        });
-      }
+      setPendingImport(importedLogs);
+      setImportType('json');
+      setShowImportConfirm(true);
     } catch (error) {
       toast({
         title: 'Restore failed',
@@ -83,36 +88,41 @@ export const DataOptions = ({ logs, onImport }: DataOptionsProps) => {
 
     try {
       const importedLogs = await importCSV(file);
-      const confirmed = window.confirm(
-        `This will add ${importedLogs.length} entries from CSV. Duplicate dates will be replaced. Continue?`
-      );
-      
-      if (confirmed) {
-        const mergedLogs = [...logs];
-        importedLogs.forEach(newLog => {
-          const existingIndex = mergedLogs.findIndex(log => log.date === newLog.date);
-          if (existingIndex >= 0) {
-            mergedLogs[existingIndex] = newLog;
-          } else {
-            mergedLogs.push(newLog);
-          }
-        });
-        onImport(mergedLogs);
-        toast({
-          title: 'CSV imported',
-          description: `Successfully imported ${importedLogs.length} weight entries.`,
-        });
-      }
+      const mergedLogs = [...logs];
+      importedLogs.forEach(newLog => {
+        const existingIndex = mergedLogs.findIndex(log => log.date === newLog.date);
+        if (existingIndex >= 0) {
+          mergedLogs[existingIndex] = newLog;
+        } else {
+          mergedLogs.push(newLog);
+        }
+      });
+      setPendingImport(mergedLogs);
+      setImportType('csv');
+      setShowImportConfirm(true);
     } catch (error) {
       toast({
         title: 'Import failed',
-        description: 'Invalid CSV format. Please check your file and try again.',
+        description: error instanceof Error ? error.message : 'Invalid CSV format. Please check your file and try again.',
         variant: 'destructive',
       });
     }
     
     if (csvInputRef.current) {
       csvInputRef.current.value = '';
+    }
+  };
+
+  const confirmImport = () => {
+    if (pendingImport) {
+      onImport(pendingImport);
+      const action = importType === 'json' ? 'restored' : 'imported';
+      toast({
+        title: `Data ${action}`,
+        description: `Successfully ${action} ${pendingImport.length} weight entries.`,
+      });
+      setPendingImport(null);
+      setShowImportConfirm(false);
     }
   };
 
@@ -214,6 +224,27 @@ export const DataOptions = ({ logs, onImport }: DataOptionsProps) => {
           </p>
         </div>
       </div>
+
+      <AlertDialog open={showImportConfirm} onOpenChange={setShowImportConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm Data Import</AlertDialogTitle>
+            <AlertDialogDescription>
+              {importType === 'json' 
+                ? `This will replace your current ${logs.length} entries with ${pendingImport?.length || 0} entries from the backup file.`
+                : `This will merge ${pendingImport?.length || 0} entries from CSV. Duplicate dates will be updated.`
+              }
+              {' '}This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setPendingImport(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmImport}>
+              {importType === 'json' ? 'Restore Backup' : 'Import CSV'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
