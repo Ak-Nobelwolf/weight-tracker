@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: mode === "production" ? "/" : "/",
+  base: mode === "production" ? "/weight-tracker/" : "/",
   build: {
     outDir: "dist",
     sourcemap: false,
