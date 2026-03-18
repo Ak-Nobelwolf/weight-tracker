@@ -211,8 +211,8 @@ The app intelligently parses various date formats:
 ![OCI Instance](./src/screenshots/oci-instance.png)
 
 ### Application Running on OCI
-![App UI 01](./src/screenshots/app-ui-01.png)
-![App UI 02](./src/screenshots/app-ui-02.png)
+![App UI](./src/screenshots/app-ui-01.png)
+![Analytics](./src/screenshots/app-ui-02.png)
 
 ### System Monitoring (OCI Metrics)
 ![Monitoring](./src/screenshots/monitoring.png)
