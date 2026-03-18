@@ -1,4 +1,4 @@
-# 🏋️ Weight Tracker
+# 🏋️ Weight Tracker (Deployed on Oracle Cloud Infrastructure)
 
 A beautiful, modern weight tracking application built with React, TypeScript, and TailwindCSS. Track your weight loss or gain journey with an intuitive interface, powerful analytics, and flexible data management.
 
@@ -6,6 +6,32 @@ A beautiful, modern weight tracking application built with React, TypeScript, an
 ![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?logo=tailwind-css)
+
+## ☁️ Oracle Cloud Infrastructure (OCI) Deployment
+
+This application is deployed on an Oracle Cloud Infrastructure (OCI) Linux-based compute instance, demonstrating real-world cloud usage.
+
+### Infrastructure Details
+- **Usage Context**: General-purpose VM hosting multiple applications (including n8n and this project)
+- **Compute Instance**: OCI Linux VM  
+- **Instance Shape**: VM.Standard.E2.1.Micro
+- **Networking**:
+  - Virtual Cloud Network (VCN) configured
+  - Public IP assigned for external access
+  - Security rules allowing HTTP/HTTPS traffic
+- **Access**:
+  - SSH used for deployment and management
+- **Hosting**:
+  - Application deployed and served from VM
+  - Domain mapped to public IP
+
+## 🧱 Architecture
+
+User → Browser → Domain → OCI VM (Linux) → Node.js App → Local Storage
+
+- Frontend hosted on OCI compute instance
+- Application served via Node.js runtime
+- Public access enabled through configured networking
 
 ## ✨ Features
 
@@ -57,6 +83,34 @@ A beautiful, modern weight tracking application built with React, TypeScript, an
 - **Date Handling**: date-fns
 - **Routing**: React Router DOM
 - **Toast Notifications**: Sonner
+- **Cloud Platform**: Oracle Cloud Infrastructure (OCI)
+- **OS**: Linux
+
+## 🧠 Development Approach
+
+The initial version of this application was generated using Lovable (an AI-assisted development platform). 
+
+The application was then significantly customized and extended manually based on specific requirements. This included modifying the codebase, improving features, and adapting the application structure.
+
+The deployment and infrastructure setup were fully performed manually on Oracle Cloud Infrastructure (OCI), including:
+- Provisioning the compute instance
+- Configuring networking and security rules
+- Deploying and managing the application on a Linux-based VM
+
+This project demonstrates the ability to:
+- Work with and extend AI-generated code
+- Understand application architecture and behavior
+- Deploy and manage applications in a real cloud environment
+
+## ⚙️ Deployment on OCI
+1. Provisioned OCI Compute Instance
+2. Configured VCN and security rules
+3. Connected via SSH
+4. Installed Node.js environment
+5. Cloned repository
+6. Built and started application
+7. Exposed via public IP and domain  
+8. Configured application port and ensured accessibility through OCI security rules
 
 ## 📖 Usage Guide
 
@@ -99,6 +153,27 @@ If you have a backup file from a previous session:
 - **JSON Backup**: Full backup for restoration
 - **CSV Export**: For use in spreadsheets or other tools
 
+## 🎯 Real-World Usage
+
+This application is actively used as a personal fitness tracker to monitor daily weight and progress.
+
+It demonstrates:
+- Real-world deployment on OCI
+- Continuous usage of a cloud-hosted application
+- Practical implementation of a production-like setup
+
+## ⚠️ Challenges Faced
+
+- Configuring security rules for public access
+- Managing port exposure on the VM
+- Setting up domain mapping
+
+## 📚 Learnings
+
+- Hands-on experience with OCI compute and networking
+- Deploying applications on Linux cloud environments
+- Managing public access and security configurations
+
 ## 🎨 Customization
 
 The app uses a comprehensive design system defined in:
@@ -129,6 +204,19 @@ The app intelligently parses various date formats:
 - **No Tracking**: No analytics, no cookies, no external requests
 - **No Account Required**: Start using immediately
 - **Data Ownership**: Export your data anytime in standard formats
+
+## 📸 Screenshots
+
+### OCI Compute Instance (Running)
+![OCI Instance](./src/screenshots/oci-instance.png)
+
+### Application Running on OCI
+![App UI 01](./src/screenshots/app-ui-01.png)
+![App UI 02](./src/screenshots/app-ui-02.png)
+
+### System Monitoring (OCI Metrics)
+![Monitoring](./src/screenshots/monitoring.png)
+
 
 ## 🤝 Contributing
 
