@@ -207,16 +207,9 @@ The app intelligently parses various date formats:
 
 ## 📸 Screenshots
 
-### OCI Compute Instance (Running)
-![OCI Instance](./src/screenshots/oci-instance.png)
-
 ### Application Running on OCI
 ![App UI](./src/screenshots/app-ui-01.png)
 ![Analytics](./src/screenshots/app-ui-02.png)
-
-### System Monitoring (OCI Metrics)
-![Monitoring](./src/screenshots/monitoring.png)
-
 
 ## 🤝 Contributing
 
